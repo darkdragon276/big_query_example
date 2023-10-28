@@ -1,53 +1,38 @@
 package com.backend.bigquery.autoconfig;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.common.collect.ImmutableSet;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
+
+import java.io.IOException;
 
 @Configuration
 @EnableAutoConfiguration
 public class BigQueryConfiguration {
 
     @Bean
-    public DirectChannel bigQueryInsertDataChannel() {
+    public static DirectChannel bigQueryInsertDataChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public DirectChannel bigQueryReplyChannel() {
+    public static DirectChannel bigQueryReplyChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public BigQuery bigQuery() {
-        return BigQueryOptions.getDefaultInstance().getService();
+    public static BigQuery bigQuery() throws IOException {
+        GoogleCredentials credentials = ServiceAccountCredentials.getApplicationDefault()
+                        .createScoped(
+                                ImmutableSet.of(
+                                        "https://www.googleapis.com/auth/bigquery",
+                                        "https://www.googleapis.com/auth/drive"));
+        return BigQueryOptions.newBuilder().setCredentials(credentials).build().getService();
     }
-
-//    @Bean
-//    @ServiceActivator(inputChannel = "bigQueryInsertDataChannel")
-//    public MessageHandler messageSender(BigQueryTemplate bigQueryTemplate) {
-//        BigQueryFileMessageHandler messageHandler = new BigQueryFileMessageHandler(bigQueryTemplate);
-//        messageHandler.setFormatOptions(FormatOptions.csv());
-//        messageHandler.setOutputChannel(bigQueryReplyChannel());
-//        return messageHandler;
-//    }
-//
-//    @Primary
-//    @Bean
-//    public GatewayProxyFactoryBean gatewayProxyFactoryBean() {
-//        GatewayProxyFactoryBean factoryBean = new GatewayProxyFactoryBean(BigQueryFileGateway.class);
-//        factoryBean.setDefaultRequestChannel(bigQueryInsertDataChannel());
-//        factoryBean.setDefaultReplyChannel(bigQueryReplyChannel());
-//        factoryBean.setAsyncExecutor(null);
-//        return factoryBean;
-//    }
-//
-//    @MessagingGateway
-//    public interface BigQueryFileGateway {
-//        ListenableFuture<Job> insertBigQueryTable(byte[] csvData, @Header(BigQuerySpringMessageHeaders.TABLE_NAME) String tableName);
-//    }
-
 }
