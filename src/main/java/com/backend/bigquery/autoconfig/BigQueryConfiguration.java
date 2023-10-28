@@ -21,6 +21,6 @@ public class BigQueryConfiguration {
                                 ImmutableSet.of(
                                         "https://www.googleapis.com/auth/bigquery",
                                         "https://www.googleapis.com/auth/drive"));
-        return BigQueryOptions.newBuilder().setCredentials(credentials).build().getService();
+        return BigQueryOptions.newBuilder().setProjectId("bigquery-402309").setCredentials(credentials).build().getService();
     }
 }
