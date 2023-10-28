@@ -29,10 +29,9 @@ public class WorkerService {
 
     public Worker getWorker(long id) {
         Worker worker;
-        String query = new StringBuilder().append("SELECT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role")
-                .append(" FROM `").append(projectId).append(".").append(datasetName).append(".").append(tableName).append("`")
-                .append(" WHERE sub_ID = ").append(id)
-                .append(" LIMIT 1").toString();
+        String query = "SELECT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role"
+                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
+                + String.format(" WHERE sub_ID = %d LIMIT 1", id);
         QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
         try {
             for(FieldValueList row: bigQuery.query(queryJobConfiguration).iterateAll()) {
@@ -56,9 +55,9 @@ public class WorkerService {
 
     public List<Worker> getWorkerListWithFirstName(String firstName) {
         List<Worker> workerList = new ArrayList<Worker>();
-        String query = new StringBuilder().append("SELECT DISTINCT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role")
-                .append(" FROM `").append(projectId).append(".").append(datasetName).append(".").append(tableName).append("`")
-                .append(" WHERE sub_fname = ").append("'").append(firstName).append("'").toString();
+        String query = "SELECT DISTINCT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role"
+                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
+                + String.format(" WHERE sub_fname = '%s'", firstName);
         QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
         try {
             for(FieldValueList row: bigQuery.query(queryJobConfiguration).iterateAll()) {
@@ -81,9 +80,9 @@ public class WorkerService {
 
     public List<Worker> getWorkerListWithLastName(String lastName) {
         List<Worker> workerList = new ArrayList<Worker>();
-        String query = new StringBuilder().append("SELECT DISTINCT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role")
-                .append(" FROM `").append(projectId).append(".").append(datasetName).append(".").append(tableName).append("`")
-                .append(" WHERE sub_lname = ").append("'").append(lastName).append("'").toString();
+        String query = "SELECT DISTINCT sub_ID, sub_fname, sub_lname, sub_age, sub_sex, sub_shift, sub_team, sub_role"
+                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
+                + String.format(" WHERE sub_lname = '%s'", lastName);
         System.out.println(query);
         QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
         try {
