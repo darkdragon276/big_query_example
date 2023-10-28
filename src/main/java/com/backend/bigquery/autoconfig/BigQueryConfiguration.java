@@ -8,24 +8,12 @@ import com.google.common.collect.ImmutableSet;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.channel.DirectChannel;
 
 import java.io.IOException;
 
 @Configuration
 @EnableAutoConfiguration
 public class BigQueryConfiguration {
-
-    @Bean
-    public static DirectChannel bigQueryInsertDataChannel() {
-        return new DirectChannel();
-    }
-
-    @Bean
-    public static DirectChannel bigQueryReplyChannel() {
-        return new DirectChannel();
-    }
-
     @Bean
     public static BigQuery bigQuery() throws IOException {
         GoogleCredentials credentials = ServiceAccountCredentials.getApplicationDefault()
