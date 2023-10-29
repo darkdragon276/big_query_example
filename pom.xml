@@ -92,6 +92,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>big-query-example-image</finalName>
 	</build>
 
 </project>
