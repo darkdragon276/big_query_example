@@ -74,9 +74,10 @@ public class WorkerService {
             System.out.println(e);
         }
         from = to.minusYears(1);
-        query = "SELECT AVG(sub_health_h) as sub_health_h, AVG(sub_sociality_h) as sub_sociality_h, COUNT(event_weekday_num) as event_weekday_num"
+        query = "SELECT AVG(T.sub_health_h) as sub_health_h, AVG(T.sub_sociality_h) as sub_sociality_h, COUNT(T.event_weekday_num) as event_weekday_num"
+                + " FROM ( SELECT DISTINCT event_date, event_week_in_series, event_day_in_series, event_weekday_num, event_weekday_name, sub_health_h, sub_sociality_h"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
-                + String.format(" WHERE sub_ID = %d and (event_date BETWEEN '%s' AND '%s')", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE));
+                + String.format(" WHERE sub_ID = %d and (event_date BETWEEN '%s' AND '%s')) as T", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE));
         QueryJobConfiguration queryJobConfiguration2 = QueryJobConfiguration.newBuilder(query).build();
         System.out.println(query);
         try {
