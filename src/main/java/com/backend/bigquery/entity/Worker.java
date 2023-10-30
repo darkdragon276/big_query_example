@@ -10,6 +10,40 @@ public class Worker {
     private  String shift;
     private  String team;
     private  String role;
+    private double health;
+    private double sociality;
+    private long dayOffPerYear;
+
+    public Worker(long id, double health, double sociality, long dayOffPerYear) {
+        this.id = id;
+        this.health = health;
+        this.sociality = sociality;
+        this.dayOffPerYear = dayOffPerYear;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    public double getSociality() {
+        return sociality;
+    }
+
+    public void setSociality(double sociality) {
+        this.sociality = sociality;
+    }
+
+    public long getDayOffPerYear() {
+        return dayOffPerYear;
+    }
+
+    public void setDayOffPerYear(long dayOffPerYear) {
+        this.dayOffPerYear = dayOffPerYear;
+    }
 
     public Worker(long id, String firstName, String lastName, long age, String sex, String shift, String team, String role) {
         this.id = id;

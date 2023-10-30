@@ -32,4 +32,9 @@ public class WorkerController {
     public List<Worker> getWorkerWithLastName(@RequestParam String lastName) {
         return workerService.getWorkerListWithLastName(lastName);
     }
+
+    @GetMapping(value = "DayOff")
+    public Worker getWorkerWithLastName(@RequestParam long id) {
+        return workerService.getWorkerDayOff(id);
+    }
 }
