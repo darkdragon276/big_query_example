@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,6 +55,43 @@ public class WorkerService {
             System.out.println(e);
         }
 
+        return null;
+    }
+
+    public Worker getWorkerDayOff(long id) {
+        Worker worker;
+        LocalDate to = LocalDate.parse("2022-02-02"), from;
+        String query = "SELECT MAX(event_date)"
+                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
+                + String.format(" WHERE sub_ID = %d", id);
+        QueryJobConfiguration queryJobConfiguration1 = QueryJobConfiguration.newBuilder(query).build();
+        try {
+            for(FieldValueList row: bigQuery.query(queryJobConfiguration1).iterateAll()) {
+                to = LocalDate.parse(row.get(0).getStringValue());
+                break;
+            }
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+        from = to.minusYears(1);
+        query = "SELECT AVG(T.sub_health_h) as sub_health_h, AVG(T.sub_sociality_h) as sub_sociality_h, COUNT(T.event_weekday_num) as event_weekday_num"
+                + " FROM ( SELECT DISTINCT event_date, event_week_in_series, event_day_in_series, event_weekday_num, event_weekday_name, sub_health_h, sub_sociality_h"
+                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
+                + String.format(" WHERE sub_ID = %d and (event_date BETWEEN '%s' AND '%s')) as T", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE));
+        QueryJobConfiguration queryJobConfiguration2 = QueryJobConfiguration.newBuilder(query).build();
+        System.out.println(query);
+        try {
+            for(FieldValueList row: bigQuery.query(queryJobConfiguration2).iterateAll()) {
+                worker = new Worker(id
+                        , row.get("sub_health_h").getDoubleValue()
+                        , row.get("sub_sociality_h").getDoubleValue()
+                        , row.get("event_weekday_num").getLongValue()
+                );
+                return worker;
+            }
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
         return null;
     }
 
