@@ -85,7 +85,7 @@ public class WorkerService {
                 worker = new Worker(id
                         , row.get("sub_health_h").getDoubleValue()
                         , row.get("sub_sociality_h").getDoubleValue()
-                        , row.get("event_weekday_num").getLongValue()
+                        , 365 - row.get("event_weekday_num").getLongValue()
                 );
                 return worker;
             }
