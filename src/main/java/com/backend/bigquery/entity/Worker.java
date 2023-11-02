@@ -12,13 +12,13 @@ public class Worker {
     private  String role;
     private double health;
     private double sociality;
-    private long dayOffPerYear;
+    private long unEfficacyDate;
 
-    public Worker(long id, double health, double sociality, long dayOffPerYear) {
+    public Worker(long id, double health, double sociality, long unEfficacyDate) {
         this.id = id;
         this.health = health;
         this.sociality = sociality;
-        this.dayOffPerYear = dayOffPerYear;
+        this.unEfficacyDate = unEfficacyDate;
     }
 
     public double getHealth() {
@@ -37,12 +37,12 @@ public class Worker {
         this.sociality = sociality;
     }
 
-    public long getDayOffPerYear() {
-        return dayOffPerYear;
+    public long getUnEfficacyDate() {
+        return unEfficacyDate;
     }
 
-    public void setDayOffPerYear(long dayOffPerYear) {
-        this.dayOffPerYear = dayOffPerYear;
+    public void setUnEfficacyDate(long unEfficacyDate) {
+        this.unEfficacyDate = unEfficacyDate;
     }
 
     public Worker(long id, String firstName, String lastName, long age, String sex, String shift, String team, String role) {

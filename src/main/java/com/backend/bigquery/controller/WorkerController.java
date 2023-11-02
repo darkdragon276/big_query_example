@@ -33,8 +33,8 @@ public class WorkerController {
         return workerService.getWorkerListWithLastName(lastName);
     }
 
-    @GetMapping(value = "DayOff")
+    @GetMapping(value = "unEfficacyDate")
     public Worker getWorkerWithLastName(@RequestParam long id) {
-        return workerService.getWorkerDayOff(id);
+        return workerService.getWorkerUnefficacyDate(id);
     }
 }
