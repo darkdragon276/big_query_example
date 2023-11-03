@@ -54,15 +54,15 @@ public class AgePropertyService {
         return null;
     }
 
-    public AgeProperty getAgeActualEfficacy(long age) {
+    public AgeProperty getAgeActualEfficacy() {
         AgeProperty ageProperty;
-        String query = "SELECT AVG(CAST(T.actual_efficacy_h AS float64)) as actual_efficacy" +
-                String.format(" FROM (SELECT actual_efficacy_h FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' and sub_age = %d) as T", projectId, datasetName, tableName, age);
+        String query = "SELECT sub_age, AVG(CAST(actual_efficacy_h AS float64)) as actual_efficacy" +
+                String.format(" FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_age", projectId, datasetName, tableName);
         System.out.println(query);
         QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
         try {
             for(FieldValueList row: bigQuery.query(queryJobConfiguration).iterateAll()) {
-                ageProperty = new AgeProperty(age
+                ageProperty = new AgeProperty(row.get("sub_age").getLongValue()
                         , 0
                         , 0
                         , 0
