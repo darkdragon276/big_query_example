@@ -21,7 +21,7 @@ public class EfficacyDayInWeekController {
         this.efficacyDayInWeekService = efficacyDayInWeekService;
     }
     @GetMapping
-    public EfficacyDayInWeek getEfficacyDayInWeek(@RequestParam long dayNum) {
+    public EfficacyDayInWeek getEfficacyDayInWeek() {
         return efficacyDayInWeekService.getEfficacyDayInWeek();
     }
 }
