@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/dayinweek")
@@ -21,7 +22,7 @@ public class EfficacyDayInWeekController {
         this.efficacyDayInWeekService = efficacyDayInWeekService;
     }
     @GetMapping
-    public EfficacyDayInWeek getEfficacyDayInWeek() {
-        return efficacyDayInWeekService.getEfficacyDayInWeek();
+    public List<EfficacyDayInWeek> getEfficacyDayInWeek() {
+        return efficacyDayInWeekService.getEfficacyDayInWeekList();
     }
 }
