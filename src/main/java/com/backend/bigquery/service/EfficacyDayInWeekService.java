@@ -40,7 +40,7 @@ public class EfficacyDayInWeekService {
             for (FieldValueList row : bigQuery.query(queryJobConfiguration).iterateAll()) {
                 EfficacyDayInWeek efficacyDayInWeek = new EfficacyDayInWeek(
                     row.get("event_weekday_num").getLongValue(),
-                    row.get(0).getDoubleValue()
+                    row.get("actual_efficacy").getDoubleValue()
                 );
                 efficacyDayInWeekList.add(efficacyDayInWeek);
             }
