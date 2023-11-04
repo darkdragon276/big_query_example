@@ -21,7 +21,7 @@ public class AgePropertyController {
         return agePropertyService.getAgeProperty(age);
     }
     @GetMapping(value = "/ageEfficacy")
-    public AgeProperty getAgeEfficacy(@RequestParam long age) {
-        return agePropertyService.getAgeActualEfficacy(age);
+    public AgeProperty getAgeEfficacy() {
+        return agePropertyService.getAgeActualEfficacy();
     }
 }

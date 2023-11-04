@@ -27,16 +27,16 @@ public class EfficacyDayInWeekService {
     @Value("Factory_Workers")
     private String tableName;
 
-    public EfficacyDayInWeek getEfficacyDayInWeek(long dayInWeekNum) {
+    public EfficacyDayInWeek getEfficacyDayInWeek() {
         EfficacyDayInWeek efficacyDayInWeek;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String query = "SELECT AVG(CAST(T.actual_efficacy_h AS float64)) as actual_efficacy" +
-                String.format(" FROM (SELECT DISTINCT sub_ID, actual_efficacy_h FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' and event_weekday_num = %d) as T", projectId, datasetName, tableName, dayInWeekNum);
+        String query = "SELECT event_weekday_num, AVG(CAST(actual_efficacy_h AS float64)) AS actual_efficacy" +
+                String.format(" FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' GROUP BY event_weekday_num ORDER BY event_weekday_num", projectId, datasetName, tableName);
         System.out.println(query);
         QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
         try {
             for(FieldValueList row: bigQuery.query(queryJobConfiguration).iterateAll()) {
-                efficacyDayInWeek = new EfficacyDayInWeek(dayInWeekNum
+                efficacyDayInWeek = new EfficacyDayInWeek(row.get("event_weekday_num").getLongValue()
                         , row.get(0).getDoubleValue()
                 );
                 return efficacyDayInWeek;
