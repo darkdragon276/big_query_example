@@ -78,9 +78,9 @@ public class WorkerService {
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
                 + " AS sub INNER JOIN ( SELECT sub_ID, COUNT(*) AS efficacy_date, ROUND(SUM(SAFE_CAST(actual_efficacy_h AS FLOAT64)), 2) AS actual_efficacy"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
-                + "  WHERE behav_comptype_h = \"Efficacy\" GROUP BY sub_ID ) AS Efficacy_Table ON sub.sub_ID = Efficacy_Table.sub_ID"
+                + " WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_ID ) AS Efficacy_Table ON sub.sub_ID = Efficacy_Table.sub_ID"
                 + String.format(" WHERE sub_ID = %d and (event_date BETWEEN '%s' AND '%s'))", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE))
-                + " AND behav_comptype_h NOT IN (\"Efficacy\",\"Presence\")"
+                + " AND behav_comptype_h NOT IN ('Efficacy','Presence')"
                 + " GROUP BY sub.sub_ID,sub.sub_health_h,sub.sub_sociality_h,actual_efficacy,efficacy_date ORDER BY sub.sub_ID";
         QueryJobConfiguration queryJobConfiguration2 = QueryJobConfiguration.newBuilder(query).build();
         System.out.println(query);
@@ -90,6 +90,8 @@ public class WorkerService {
                         , row.get("sub_health_h").getDoubleValue()
                         , row.get("sub_sociality_h").getDoubleValue()
                         , row.get("un_efficacy_date").getLongValue()
+                        , row.get("efficacy_date").getLongValue()
+                        , row.get("actual_efficacy").getDoubleValue()
                 );
                 return worker;
             }

@@ -13,12 +13,16 @@ public class Worker {
     private double health;
     private double sociality;
     private long unEfficacyDate;
+    private long efficacyDate;
+    private double actualEfficacy;
 
-    public Worker(long id, double health, double sociality, long unEfficacyDate) {
+    public Worker(long id, double health, double sociality, long unEfficacyDate, long efficacyDate, double actualEfficacy) {
         this.id = id;
         this.health = health;
         this.sociality = sociality;
         this.unEfficacyDate = unEfficacyDate;
+        this.efficacyDate = efficacyDate;
+        this.actualEfficacy = actualEfficacy;
     }
 
     public double getHealth() {
@@ -43,6 +47,14 @@ public class Worker {
 
     public void setUnEfficacyDate(long unEfficacyDate) {
         this.unEfficacyDate = unEfficacyDate;
+    }
+
+    public void setefficacyDate(long efficacyDate) {
+        this.efficacyDate = efficacyDate;
+    }
+
+    public void setActualEfficacy(long actualEfficacy) {
+        this.actualEfficacy = actualEfficacy;
     }
 
     public Worker(long id, String firstName, String lastName, long age, String sex, String shift, String team, String role) {
