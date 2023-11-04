@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/age")
 public class AgePropertyController {
@@ -21,7 +23,7 @@ public class AgePropertyController {
         return agePropertyService.getAgeProperty(age);
     }
     @GetMapping(value = "/ageEfficacy")
-    public AgeProperty getAgeEfficacy() {
-        return agePropertyService.getAgeActualEfficacy();
+    public List<AgeProperty> getAgeEfficacy() {
+        return agePropertyService.getAgeActualEfficacyList();
     }
 }

@@ -5,6 +5,10 @@ import com.backend.bigquery.entity.Worker;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.QueryJobConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,30 +58,31 @@ public class AgePropertyService {
         return null;
     }
 
-    public AgeProperty getAgeActualEfficacy() {
-        AgeProperty ageProperty;
-        String query = "SELECT sub_age, AVG(CAST(actual_efficacy_h AS float64)) as actual_efficacy" +
-                String.format(" FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_age", projectId, datasetName, tableName);
-        System.out.println(query);
-        QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
-        try {
-            for(FieldValueList row: bigQuery.query(queryJobConfiguration).iterateAll()) {
-                ageProperty = new AgeProperty(row.get("sub_age").getLongValue()
-                        , 0
-                        , 0
-                        , 0
-                        , 0
-                        , 0
-                        , 0
-                        , 0
-                        , 0
-                        , row.get("actual_efficacy").getDoubleValue()
-                );
-                return ageProperty;
-            }
-        } catch (InterruptedException e) {
-            System.out.println(e);
+    public List<AgeProperty> getAgeActualEfficacyList() {
+    List<AgeProperty> agePropertyList = new ArrayList<>();
+    String query = "SELECT sub_age, AVG(CAST(actual_efficacy_h AS float64)) as actual_efficacy" +
+            String.format(" FROM `%s.%s.%s` WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_age", projectId, datasetName, tableName);
+    System.out.println(query);
+    QueryJobConfiguration queryJobConfiguration = QueryJobConfiguration.newBuilder(query).build();
+    try {
+        for (FieldValueList row : bigQuery.query(queryJobConfiguration).iterateAll()) {
+            AgeProperty ageProperty = new AgeProperty(
+                row.get("sub_age").getLongValue(),
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                row.get("actual_efficacy").getDoubleValue()
+            );
+            agePropertyList.add(ageProperty);
         }
-        return null;
+    } catch (InterruptedException e) {
+        System.out.println(e);
     }
+    return agePropertyList;
+}
 }
