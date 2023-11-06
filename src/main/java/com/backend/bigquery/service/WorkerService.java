@@ -79,8 +79,8 @@ public class WorkerService {
                 + " AS sub INNER JOIN ( SELECT sub_ID, COUNT(*) AS efficacy_date, ROUND(SUM(SAFE_CAST(actual_efficacy_h AS FLOAT64)), 2) AS actual_efficacy"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
                 + " WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_ID ) AS Efficacy_Table ON sub.sub_ID = Efficacy_Table.sub_ID"
-                + String.format(" WHERE sub_ID = %d and (event_date BETWEEN '%s' AND '%s'))", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE))
-                + " AND behav_comptype_h NOT IN ('Efficacy','Presence')"
+                + String.format(" WHERE sub.sub_ID = %d and (event_date BETWEEN '%s' AND '%s'))", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE))
+                + " AND sub.behav_comptype_h NOT IN ('Efficacy','Presence')"
                 + " GROUP BY sub.sub_ID,sub.sub_health_h,sub.sub_sociality_h,actual_efficacy,efficacy_date ORDER BY sub.sub_ID";
         QueryJobConfiguration queryJobConfiguration2 = QueryJobConfiguration.newBuilder(query).build();
         System.out.println(query);
