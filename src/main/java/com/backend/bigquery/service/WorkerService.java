@@ -60,26 +60,12 @@ public class WorkerService {
 
     public Worker getWorkerUnefficacyDate(long id) {
         Worker worker;
-        LocalDate to = LocalDate.parse("2022-02-02"), from;
-        String query = "SELECT MAX(event_date)"
-                + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
-                + String.format(" WHERE sub_ID = %d", id);
-        QueryJobConfiguration queryJobConfiguration1 = QueryJobConfiguration.newBuilder(query).build();
-        try {
-            for(FieldValueList row: bigQuery.query(queryJobConfiguration1).iterateAll()) {
-                to = LocalDate.parse(row.get(0).getStringValue());
-                break;
-            }
-        } catch (InterruptedException e) {
-            System.out.println(e);
-        }
-        from = to.minusYears(1);
-        query = "SELECT sub.sub_ID, sub.sub_health_h,sub.sub_sociality_h,COUNT(*) AS un_efficacy_date, efficacy_date,actual_efficacy"
+        String query = "SELECT sub.sub_ID, sub.sub_health_h,sub.sub_sociality_h,COUNT(*) AS un_efficacy_date, efficacy_date,actual_efficacy"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
                 + " AS sub INNER JOIN ( SELECT sub_ID, COUNT(*) AS efficacy_date, ROUND(SUM(SAFE_CAST(actual_efficacy_h AS FLOAT64)), 2) AS actual_efficacy"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
                 + " WHERE behav_comptype_h = 'Efficacy' GROUP BY sub_ID ) AS Efficacy_Table ON sub.sub_ID = Efficacy_Table.sub_ID"
-                + String.format(" WHERE sub.sub_ID = %d and (event_date BETWEEN '%s' AND '%s'))", id, from.format(DateTimeFormatter.ISO_DATE), to.format(DateTimeFormatter.ISO_DATE))
+                + String.format(" WHERE sub.sub_ID = %d ", id)
                 + " AND sub.behav_comptype_h NOT IN ('Efficacy','Presence')"
                 + " GROUP BY sub.sub_ID,sub.sub_health_h,sub.sub_sociality_h,actual_efficacy,efficacy_date ORDER BY sub.sub_ID";
         QueryJobConfiguration queryJobConfiguration2 = QueryJobConfiguration.newBuilder(query).build();
