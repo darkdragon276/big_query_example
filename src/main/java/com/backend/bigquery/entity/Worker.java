@@ -44,12 +44,18 @@ public class Worker {
     public long getUnEfficacyDate() {
         return unEfficacyDate;
     }
+    public long getEfficacyDate() {
+        return efficacyDate;
+    }
 
+    public double getActualEfficacy() {
+        return actualEfficacy;
+    }
     public void setUnEfficacyDate(long unEfficacyDate) {
         this.unEfficacyDate = unEfficacyDate;
     }
 
-    public void setefficacyDate(long efficacyDate) {
+    public void setEfficacyDate(long efficacyDate) {
         this.efficacyDate = efficacyDate;
     }
 

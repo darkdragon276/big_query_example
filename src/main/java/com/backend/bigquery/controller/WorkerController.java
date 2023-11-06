@@ -33,8 +33,8 @@ public class WorkerController {
         return workerService.getWorkerListWithLastName(lastName);
     }
 
-    @GetMapping(value = "unEfficacyDate")
-    public Worker getWorkerWithLastName(@RequestParam long id) {
-        return workerService.getWorkerUnefficacyDate(id);
+    @GetMapping(value = "getWorkerActucalEfficacy")
+    public Worker getWorkerActualEfficacy(@RequestParam long id) {
+        return workerService.getWorkerActualEfficacy(id);
     }
 }

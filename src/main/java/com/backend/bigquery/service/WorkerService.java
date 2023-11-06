@@ -58,7 +58,7 @@ public class WorkerService {
         return null;
     }
 
-    public Worker getWorkerUnefficacyDate(long id) {
+    public Worker getWorkerActualEfficacy(long id) {
         Worker worker;
         String query = "SELECT sub.sub_ID, sub.sub_health_h,sub.sub_sociality_h,COUNT(*) AS un_efficacy_date, efficacy_date,actual_efficacy"
                 + String.format(" FROM `%s.%s.%s`", projectId, datasetName, tableName)
